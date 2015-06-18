@@ -11,7 +11,7 @@ void main () {
 	unsigned char * buffer;
 	long length;
     unsigned int dist_len = 26*13;
-    distribution * dists = malloc(sizeof(struct distribution)*dist_len);
+    //distribution * dists = malloc(sizeof(struct distribution)*dist_len);
 
 	// the very first thing we need is to read the cipher text
 	FILE *fCipher;
@@ -52,25 +52,59 @@ void main () {
     unsigned char * tkey;
     unsigned int position = 0;
     unsigned char * last_key;
-    for(ci = 1;ci <= 13; ci++) {
-        tkey = (char *)malloc(ci);
-        last_key  = (char *)malloc(ci);
+    
+    distribution good;
+    good.distance = -1;
+    int start = 1;
+    for(ci = start;ci <= 13; ci++) {
+        if(ci > start) {
+            free(tkey);
+            free(last_key);
+        }
+        tkey = (char *)malloc(sizeof(char)*(ci+1));
+        last_key  = (char *)malloc(sizeof(char)*(ci+1));
         memset(tkey,START_A,ci);
         memset(last_key,END_A,ci);
+        tkey[ci] = '\0';
+        last_key[ci] = '\0';
         //try all possible keys within the same alphabet and size
         unsigned int pos = 0;
         unsigned int limit = pos;
         //then by our alphabet
         printf("start search:\n");
-		
-        while (tkey != last_key) {
-	  tkey = nextKey(tkey,ci);
-        }
-        for(cj = START_A; cj <= END_A; cj++) {
-	  
-	  dists[dist_index] = getDist((unsigned long)length,buffer,tkey,cj,0); 
-	  //to find length we will only use index 0 as a start
-	  dist_index++;
+
+        while (strncmp(tkey,last_key,ci) != 0) {
+            
+            //printf("%s\n",tkey);
+            distribution dt = getDist((unsigned long)length,buffer,ci,tkey,0);
+            int k = 0;
+            //printf("%s -%f\n",tkey,dt.distance);
+            if(good.distance == -1) {
+                good = dt;
+                /* while(k < ci) { */
+                /*     printf("%02x",good.key[k]); */
+                /*     k++; */
+                /* } */
+                //if (good.distance < 2 )printf("%s - distance:%f\n",good.key,good.distance );
+            } else if(dt.distance < fabs(good.distance)) {
+                good = dt;
+                while(k < ci) {
+                    printf("%02x",good.key[k]);
+                    k++;
+                }
+                //printf("%s - distance:%f\n",good.key,good.distance );
+                //printf(" - distance:%f\n",good.distance );
+                printf(" - distance:%f -- e:%f   - t:%f  - a:%f \n ",good.distance,good.e_frequency,good.t_frequency,good.a_frequency );
+            }
+            /* if(good.distance != 99) { */
+            /*     while(k < ci) { */
+            /*         printf("%02x",good.key[k]); */
+            /*         k++; */
+            /*     } */
+            /*     printf(" - distance:%f -- e:%f   - t:%f  - a:%f \n ",good.distance,good.e_frequency,good.t_frequency,good.a_frequency ); */
+            /* } */
+
+            tkey = nextKey(tkey,ci);
         }
 
     }
@@ -82,3 +116,11 @@ void main () {
 	return;
 			
 }
+
+
+/* char * str = (char*)malloc(sizeof(char)*(length+1)); */
+
+
+/* const char* str = "angel"; */
+/* str[length] = '\0'; */
+
