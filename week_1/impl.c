@@ -79,15 +79,21 @@ struct distribution getDist(unsigned long b_size
     
     //printf("trying key %s\n",key);
 
-    for(i = 0,count = 0; count < b_size; count += 1,i++) {
-        c = buffer[count] ^ key[count % k_len];
-        //printf("%c XOR %c = %02x;;",buffer[count],key[count % k_len], c);
-        if( c == 0x65 ) nE++;
-        if( c == 0x74 ) nT++;
-        if( c == 0x61 ) nA++;
-        d.n++;
+    for(count = index; count < b_size; count ++) {
+        
+        if ((count - index) % k_len == 0) {
+            
+            c = buffer[count] ^ key[count % k_len];
+            if( c == 0x65 ) nE++;
+            if( c == 0x74 ) nT++;
+            if( c == 0x61 ) nA++;
+            d.n++;
+            printf("%02x XOR %02x = %c  N:%d \n",buffer[count],key[count % k_len],c,d.n);   
+            
+        }
+
     }
-    //printf("%f,%f,%f \n",nE,nT,nA);
+    printf("%f,%f,%f - total letters: %d\n",nE,nT,nA,d.n);
     d.e_frequency = nE/(double)d.n;
     d.t_frequency = nT/(double)d.n;
     d.a_frequency = nA/(double)d.n;

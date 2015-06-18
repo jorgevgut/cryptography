@@ -54,8 +54,11 @@ void main () {
     unsigned char * last_key;
     
     distribution good;
-    good.distance = -1;
-    int start = 1;
+
+    int start = 13;
+    int the_index = 0;
+    for(the_index = 0; the_index < 13;the_index++) {
+        good.distance = -1;
     for(ci = start;ci <= 13; ci++) {
         if(ci > start) {
             free(tkey);
@@ -73,10 +76,11 @@ void main () {
         //then by our alphabet
         printf("start search:\n");
 
-        while (strncmp(tkey,last_key,ci) != 0) {
-            
+        /* while (strncmp(tkey,last_key,1) != 0) { */
+        while (tkey[the_index] != last_key[the_index]) { 
             //printf("%s\n",tkey);
-            distribution dt = getDist((unsigned long)length,buffer,ci,tkey,0);
+            distribution dt = getDist((unsigned long)length,buffer,ci,tkey
+                                      ,the_index); //index
             int k = 0;
             //printf("%s -%f\n",tkey,dt.distance);
             if(good.distance == -1) {
@@ -95,8 +99,10 @@ void main () {
                 //printf("%s - distance:%f\n",good.key,good.distance );
                 //printf(" - distance:%f\n",good.distance );
                 printf(" - distance:%f -- e:%f   - t:%f  - a:%f \n ",good.distance,good.e_frequency,good.t_frequency,good.a_frequency );
+            
             }
-            /* if(good.distance != 99) { */
+
+            /* if(good.distance < 0.5) { */
             /*     while(k < ci) { */
             /*         printf("%02x",good.key[k]); */
             /*         k++; */
@@ -106,7 +112,7 @@ void main () {
 
             tkey = nextKey(tkey,ci);
         }
-
+    }
     }
 
 

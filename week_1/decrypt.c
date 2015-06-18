@@ -11,7 +11,7 @@ void main () {
 	unsigned char * raw_buffer;
 	unsigned char * buffer;
 	long length;
-	unsigned char key[KEY_LENGTH] = {0x74,0x65,0x61,0x00,0x00,0x00,0x00,0x00};
+	unsigned char key[KEY_LENGTH] = {0x01,0x61,0x74,0x00,0x00,0x00,0x00,0x00};
 
 	// the very first thing we need is to read the cipher text
 	FILE *fCipher;
