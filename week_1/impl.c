@@ -24,6 +24,25 @@ struct distribution {
 
 typedef struct distribution distribution;
 
+unsigned char * nextKey(unsigned char * buffer, unsigned int len) {
+  
+  int i;
+  for (i = 0; i < len; i++) {
+    
+    if( buffer[i] < END_A) {
+      buffer[i]++;
+      
+      if(i  > 0) {
+	int j;
+	for ( j = 0 ; j < i;j++) {
+	  buffer[j] = START_A;
+	}
+      }
+      
+      break;
+  }
+  return buffer;
+}
 
 //this function will get the distribution of a given buffer with index to test, length and key
 struct distribution getDist(unsigned long b_size

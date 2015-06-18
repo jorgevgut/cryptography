@@ -58,29 +58,20 @@ void main () {
         memset(tkey,START_A,ci);
         memset(last_key,END_A,ci);
         //try all possible keys within the same alphabet and size
-        unsigned int pos = ci-1;
+        unsigned int pos = 0;
         unsigned int limit = pos;
         //then by our alphabet
         printf("start search:\n");
-        /* while (tkey != last_key) { */
-        /*     while(limit >= 0) { */
-        /*         int i; */
-        /*         for(i = ci-1; i > limit; i--) { */
-                    //while(tkey[i] <= END_A) {
-                        tkey[i]++;
-                        //get dist
-                        printf("%s\n",tkey);
-//}
-                        //                  tkey[pos] = START_A;
-          /*       } */
-        /*         limit--; */
-        /*     } */
-        /* }  */
-        /* for(cj = START_A; cj <= END_A; cj++) { */
-            
-        /*     dists[dist_index] = getDist((unsigned long)length,buffer,tkey,cj,0); //to find length we will only use index 0 as a start */
-        /*     dist_index++; */
-        /* } */
+		
+        while (tkey != last_key) {
+	  tkey = nextKey(tkey,ci);
+        }
+        for(cj = START_A; cj <= END_A; cj++) {
+	  
+	  dists[dist_index] = getDist((unsigned long)length,buffer,tkey,cj,0); 
+	  //to find length we will only use index 0 as a start
+	  dist_index++;
+        }
 
     }
 
