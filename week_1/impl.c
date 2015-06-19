@@ -5,8 +5,8 @@
 #define START_A 0x00 
 //0x31
 //0x61
-#define END_A 0x7a
-//0x7A
+#define END_A 0x20
+//0x7A,0x7e
 
 /* For this program we are going to assume 26 dictionary letters
 ascii from lowercase a to z
@@ -99,9 +99,9 @@ struct distribution getDist(unsigned long b_size
     d.t_frequency = nT/d.n;
     d.a_frequency = nA/d.n;
     //printf("number of letters %i, e:%f - t:%f - a:%f \n",d.n,d.e_frequency,d.t_frequency,d.a_frequency);
-    d.distance = (1 - (((d.e_frequency / 0.127) 
-                            * (d.t_frequency / 0.091) 
-                            * (d.a_frequency / 0.082)))) ;
+    d.distance = sqrt( (d.e_frequency - 0.127) *(d.e_frequency - 0.127)
+                       + (d.t_frequency - 0.091) * (d.t_frequency - 0.091)
+                       + (d.a_frequency - 0.082)*(d.a_frequency - 0.082) );
     //if(nE == 0 && nT == 0 && nA ==0) d.distance = 99;
     return d;
 }

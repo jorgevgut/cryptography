@@ -3,7 +3,7 @@
 #include "impl.c"
 
 
-#define KEY_LENGTH 4 // Can be anything from 1 to 13
+#define KEY_LENGTH 6 // Can be anything from 1 to 13
 
 
 void main () {
@@ -11,8 +11,18 @@ void main () {
 	unsigned char * raw_buffer;
 	unsigned char * buffer;
 	long length;
-	unsigned char key[KEY_LENGTH] = {0x12,0x12,0x10,0x11};//,0x00,0x00,0x00,0x00,0x00};
-
+	unsigned char key[KEY_LENGTH] = {0x12,0x12,0x13,0x12,0x12,0x12};//,0x12,0x07,0x10,0x10};
+    /* 
+       1. 12 --
+       2. 16 , 31
+       3. 12 ---10,  or 01,14,12
+       4. 12
+       5.
+       6.
+       7.
+       8.
+       9.
+    */
 	// the very first thing we need is to read the cipher text
 	FILE *fCipher;
 	long rlength;
@@ -34,11 +44,11 @@ void main () {
 	buffer = (char *) malloc (length);
 	int i,j ;
 	for (i = 0,j = 0; i< length; j+=2,i++) {
-		buffer[i] = (raw_buffer[j] << 4) | raw_buffer[j+1];
+		buffer[i] = ((raw_buffer[j] << 4) | raw_buffer[j+1]);
 	}
     int k = 0;
     while( *buffer != '\0') {
-        if (k % KEY_LENGTH == 0) printf("\n");
+        //if (k % KEY_LENGTH == 0) printf("\n");
         printf("%c",*buffer ^ key[k % KEY_LENGTH]);
         buffer++;
 

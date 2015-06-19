@@ -69,9 +69,9 @@ void main () {
             memset(key_set,alph,start); //set key values
             //printf("char: %02x, size: %d, key_set:%s\n",alph,start,key_set);
             distribution dt = getDist((unsigned long)length,buffer,start,key_set
-                                      ,0); //index
+                                      ,1); //index
                         printf("key: %02x - key_size:%d   distance:%f -- e:%f   - t:%f  - a:%f \n "
-                       ,alph,start,good.distance
+                       ,alph,start,dt.distance
                        ,dt.e_frequency
                        ,dt.t_frequency
                        ,dt.a_frequency );
