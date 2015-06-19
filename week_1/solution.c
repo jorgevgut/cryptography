@@ -21,24 +21,26 @@ void main () {
 	fseek (fCipher,0,SEEK_END);
 	rlength = ftell (fCipher);
 	fseek (fCipher,0,SEEK_SET);
-	raw_buffer = (char *)malloc (rlength);
+	raw_buffer = (char *)malloc (sizeof(char)*rlength);
 	
-	if (raw_buffer) fread (raw_buffer, 1, length ,fCipher);
+	if (raw_buffer) fread (raw_buffer, 1, rlength ,fCipher);
 	fclose(fCipher);
 
 	//print original cipher text
+	printf("print original cipher text\n");
 	printf("%s\n",raw_buffer);
 	
 	//get the correct string with buffer
 	length = rlength / 2;
-	buffer = (char *) malloc (length);
+	buffer = (char *) malloc (sizeof(char)*(length+1));
 	int i,j ;
 	for (i = 0,j = 0; i< length; j+=2,i++) {
 		buffer[i] = (raw_buffer[j] << 4) | raw_buffer[j+1];
 	}
+	buffer[i] = '\0';
 	
 	//print original cipher text
-	printf("%s\n",buffer);
+	printf("processed original cipher: %s\n",buffer);
 	
 	/* Problem 1. find the length of the key, we know that the key length is somewhere between 1 and 13 
 	 according to the excercise, I will create an array (size 13) to store probability of that being the 
@@ -55,11 +57,11 @@ void main () {
     
     distribution good;
 
-    int start = 13;
+    int start = 9;
     int the_index = 0;
     for(the_index = 0; the_index < 13;the_index++) {
         good.distance = -1;
-    for(ci = start;ci <= 13; ci++) {
+    for(ci = start;ci <= 9; ci++) {
         if(ci > start) {
             free(tkey);
             free(last_key);
@@ -98,7 +100,7 @@ void main () {
                 }
                 //printf("%s - distance:%f\n",good.key,good.distance );
                 //printf(" - distance:%f\n",good.distance );
-                printf(" - distance:%f -- e:%f   - t:%f  - a:%f \n ",good.distance,good.e_frequency,good.t_frequency,good.a_frequency );
+                printf(" - key_size:%d   distance:%f -- e:%f   - t:%f  - a:%f \n ",ci,good.distance,good.e_frequency,good.t_frequency,good.a_frequency );
             
             }
 

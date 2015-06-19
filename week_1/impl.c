@@ -51,7 +51,7 @@ unsigned char * nextKey(unsigned char * buffer, unsigned int len) {
 
 //this function will get the distribution of a given buffer with index to test, length and key
 struct distribution getDist(unsigned long b_size
-                            ,char * buffer
+                            ,unsigned char * buffer
                             ,unsigned int k_len
                             ,unsigned char * key
                             ,unsigned int index) {
@@ -88,12 +88,13 @@ struct distribution getDist(unsigned long b_size
             if( c == 0x74 ) nT++;
             if( c == 0x61 ) nA++;
             d.n++;
-            printf("%02x XOR %02x = %c  N:%d \n",buffer[count],key[count % k_len],c,d.n);   
+			/* printf("%s\n",buffer); */
+            /* printf("%02x (count %d) XOR %02x = %c  N:%d \n",buffer[count],count,key[count % k_len],c,d.n);    */
             
         }
 
     }
-    printf("%f,%f,%f - total letters: %d\n",nE,nT,nA,d.n);
+    //printf("%f,%f,%f - total letters: %d\n",nE,nT,nA,d.n);
     d.e_frequency = nE/(double)d.n;
     d.t_frequency = nT/(double)d.n;
     d.a_frequency = nA/(double)d.n;
